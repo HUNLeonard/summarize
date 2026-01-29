@@ -19,7 +19,6 @@ function ensureContainer() {
     host = document.createElement("div");
     host.id = CONTAINER_ID;
     // Keep it out of normal layout flow
-    host.style.all = "initial";
     host.style.position = "fixed";
     host.style.inset = "0";
     host.style.pointerEvents = "none";
@@ -47,6 +46,7 @@ function ensureContainer() {
   if (!appRoot) {
     appRoot = document.createElement("div");
     appRoot.id = APP_ROOT_ID;
+    appRoot.className = "summarizer";
     appRoot.style.pointerEvents = "auto";
     shadow.appendChild(appRoot);
   }
