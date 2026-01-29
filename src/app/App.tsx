@@ -127,8 +127,35 @@ export default function App() {
     text: string;
     isForward: boolean;
   }>({ show: false, x: 0, y: 0, text: "", isForward: true });
+  const [storedRange, setStoredRange] = useState<Range | null>(null);
 
   const currentContent = data.content_by_language[selectedLanguage];
+
+  // Function to calculate button position from a range
+  const calculateButtonPosition = (range: Range, isForward: boolean) => {
+    let rect;
+    if (isForward) {
+      // Forward selection: show at bottom-right of the selection
+      const endRange = range.cloneRange();
+      endRange.collapse(false); // Collapse to end
+      rect = endRange.getBoundingClientRect();
+    } else {
+      // Backward selection (default): show above the first character
+      const startRange = range.cloneRange();
+      startRange.collapse(true); // Collapse to start
+      rect = startRange.getBoundingClientRect();
+    }
+
+    if (rect) {
+      // Use viewport coordinates directly (for fixed positioning)
+      // Position at bottom-right corner of the selection
+      // For forward selection: align button's right edge with selection's right edge
+      const x = isForward ? rect.right : rect.left;
+      const y = isForward ? rect.bottom + 5 : rect.top - 35;
+      return { x, y };
+    }
+    return null;
+  };
 
   // Handle text selection
   useEffect(() => {
@@ -149,33 +176,22 @@ export default function App() {
               ? selection.anchorOffset < selection.focusOffset
               : (selection.anchorNode.compareDocumentPosition(selection.focusNode) & Node.DOCUMENT_POSITION_FOLLOWING) !== 0);
           
-          let rect;
-          if (isForward) {
-            // Forward selection: show below the last character
-            const endRange = range.cloneRange();
-            endRange.collapse(false); // Collapse to end
-            rect = endRange.getBoundingClientRect();
-          } else {
-            // Backward selection (default): show above the first character
-            const startRange = range.cloneRange();
-            startRange.collapse(true); // Collapse to start
-            rect = startRange.getBoundingClientRect();
-          }
-
-          if (rect) {
-            const x = rect.left;
-            const y = isForward ? rect.bottom + 5 : rect.top - 35;
-
+          const position = calculateButtonPosition(range, !!isForward);
+          
+          if (position) {
+            // Store the range so we can recalculate position on scroll
+            setStoredRange(range.cloneRange());
             setSelectionButton({
               show: true,
-              x: x,
-              y: y,
+              x: position.x,
+              y: position.y,
               text: text,
               isForward: !!isForward,
             });
           }
         } else {
           setSelectionButton({ show: false, x: 0, y: 0, text: "", isForward: true });
+          setStoredRange(null);
         }
       }, 10);
     };
@@ -188,6 +204,7 @@ export default function App() {
       }
       // Hide button when user starts a new selection
       setSelectionButton({ show: false, x: 0, y: 0, text: "", isForward: true });
+      setStoredRange(null);
     };
 
     document.addEventListener("mouseup", handleMouseUp);
@@ -199,11 +216,49 @@ export default function App() {
     };
   }, []);
 
+  // Update button position on scroll/resize
+  useEffect(() => {
+    if (!selectionButton.show || !storedRange) return;
+
+    const updatePosition = () => {
+      try {
+        const position = calculateButtonPosition(storedRange, selectionButton.isForward);
+        if (position) {
+          setSelectionButton(prev => ({
+            ...prev,
+            x: position.x,
+            y: position.y,
+          }));
+        }
+      } catch (e) {
+        // Range might be invalid (e.g., DOM changed), hide button
+        setSelectionButton({ show: false, x: 0, y: 0, text: "", isForward: true });
+        setStoredRange(null);
+      }
+    };
+
+    // Listen to scroll on window, document, and body to catch all scroll events
+    window.addEventListener("scroll", updatePosition, true); // Use capture phase to catch all scrolls
+    document.addEventListener("scroll", updatePosition, true);
+    document.documentElement.addEventListener("scroll", updatePosition, true);
+    document.body.addEventListener("scroll", updatePosition, true);
+    window.addEventListener("resize", updatePosition);
+
+    return () => {
+      window.removeEventListener("scroll", updatePosition, true);
+      document.removeEventListener("scroll", updatePosition, true);
+      document.documentElement.removeEventListener("scroll", updatePosition, true);
+      document.body.removeEventListener("scroll", updatePosition, true);
+      window.removeEventListener("resize", updatePosition);
+    };
+  }, [selectionButton.show, storedRange, selectionButton.isForward]);
+
   const handleSummarize = () => {
     setIsOpen(true);
     setIsLoading(true);
     console.log("bababoi")
     setSelectionButton({ show: false, x: 0, y: 0, text: "", isForward: true });
+    setStoredRange(null);
     // Clear the selection
     window.getSelection()?.removeAllRanges();
     
@@ -224,7 +279,7 @@ export default function App() {
           }}
           className="fixed px-3 py-1.5 bg-foreground text-background rounded-md shadow-lg hover:opacity-90 transition-opacity font-medium text-xs z-50"
           style={{
-            left: `${selectionButton.x}px`,
+            left: selectionButton.isForward ? `${selectionButton.x}px` : `${selectionButton.x}px`,
             top: `${selectionButton.y}px`,
             transform: selectionButton.isForward ? 'translateX(-100%)' : 'none',
           }}
