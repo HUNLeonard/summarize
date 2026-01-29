@@ -3,7 +3,7 @@ import { Card } from "./ui/card";
 import { Badge } from "./ui/badge";
 import { Clock } from "lucide-react";
 
-interface TimeAndRoiProps {
+type Props = {
   timeAndRoi: {
     estimated_reading_time_minutes: number;
     content_density: string;
@@ -11,7 +11,7 @@ interface TimeAndRoiProps {
   };
 }
 
-export function TimeAndRoi({ timeAndRoi }: TimeAndRoiProps) {
+export function TimeAndRoi({ timeAndRoi }: Props) {
   const getLevelBadgeVariant = (level: string): "default" | "secondary" | "outline" => {
     switch (level) {
       case "high":

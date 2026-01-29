@@ -2,13 +2,13 @@ import React, { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import { FileText } from "lucide-react";
 
-interface QuickSummaryProps {
+type Props = {
   oneSentence: string[];
   threeSentences: string[];
   fiveSentences: string[];
 }
 
-export function QuickSummary({ oneSentence, threeSentences, fiveSentences }: QuickSummaryProps) {
+export function QuickSummary({ oneSentence, threeSentences, fiveSentences }: Props) {
   const [selectedView, setSelectedView] = useState<number>(1);
 
   const renderContent = () => {

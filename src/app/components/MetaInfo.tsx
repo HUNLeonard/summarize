@@ -3,7 +3,7 @@ import { Badge } from "./ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import { Bot, Languages, ChevronDown, ChevronUp } from "lucide-react";
 
-interface MetaInfoProps {
+type Props = {
   assistantName: string;
   inputLanguage: string;
   outputLanguages: string[];
@@ -11,7 +11,7 @@ interface MetaInfoProps {
   onToggle: () => void;
 }
 
-export function MetaInfo({ assistantName, inputLanguage, outputLanguages, isExpanded, onToggle }: MetaInfoProps) {
+export function MetaInfo({ assistantName, inputLanguage, outputLanguages, isExpanded, onToggle }: Props) {
   return (
     <Card>
       <CardHeader className="pb-2 pt-3 px-3 cursor-pointer" onClick={onToggle}>

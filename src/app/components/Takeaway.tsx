@@ -2,11 +2,11 @@ import React from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import { Target } from "lucide-react";
 
-interface TakeawayProps {
+type Props = {
   takeaway: string[];
 }
 
-export function Takeaway({ takeaway }: TakeawayProps) {
+export function Takeaway({ takeaway }: Props) {
   return (
     <Card className="bg-primary/5 border-primary/20">
       <CardHeader className="pb-2 pt-3 px-3">

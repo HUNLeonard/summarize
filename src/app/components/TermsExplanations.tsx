@@ -2,21 +2,15 @@ import React from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import { Badge } from "./ui/badge";
 import { BookOpen, Lightbulb } from "lucide-react";
+import { Term } from "../../types/types";
 
-interface Term {
-  term: string;
-  type: string;
-  explanation: string;
-  example: string;
-}
-
-interface TermsExplanationsProps {
+type Props = {
   status: string;
   items: Term[];
   ifNone: string;
 }
 
-export function TermsExplanations({ status, items, ifNone }: TermsExplanationsProps) {
+export function TermsExplanations({ status, items, ifNone }: Props) {
   return (
     <Card>
       <CardHeader className="pb-2 pt-3 px-3">

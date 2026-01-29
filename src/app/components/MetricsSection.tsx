@@ -4,7 +4,7 @@ import { Badge } from "./ui/badge";
 import { Progress } from "./ui/progress";
 import { BarChart3, Clock, Brain, AlertCircle, TrendingUp, CheckCircle } from "lucide-react";
 
-interface MetricsSectionProps {
+type Props = {
   contentValue: {
     informational: number;
     educational: number;
@@ -51,7 +51,7 @@ export function MetricsSection({
   relevance,
   cognitiveLoad,
   assessment,
-}: MetricsSectionProps) {
+}: Props) {
   const getLevelColor = (level: string) => {
     switch (level) {
       case "high":
