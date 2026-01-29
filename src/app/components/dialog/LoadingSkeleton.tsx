@@ -1,6 +1,6 @@
 import React from "react";
 
-export function LoadingSkeleton() {
+const LoadingSkeleton = () => {
   return (
     <div className="animate-pulse opacity-40">
       {/* Time & ROI Skeleton */}
@@ -92,3 +92,5 @@ export function LoadingSkeleton() {
     </div>
   );
 }
+
+export default LoadingSkeleton

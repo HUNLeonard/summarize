@@ -1,8 +1,7 @@
 import React, { useState, useEffect, useMemo } from "react";
-import { loadingMessages } from "../../data/loadingMessages";
+import { loadingMessages } from "../../../data/loadingMessages";
 
-export function LoadingMessage() {
-  // Shuffle messages once on mount
+const LoadingMessage = () => {
   const shuffledMessages = useMemo(() => {
     const messages = [...loadingMessages];
     for (let i = messages.length - 1; i > 0; i--) {
@@ -25,7 +24,6 @@ export function LoadingMessage() {
       });
     }, 50);
 
-    // Message rotation
     const messageInterval = setInterval(() => {
       setIsTransitioning(true);
       setTimeout(() => {
@@ -59,3 +57,5 @@ export function LoadingMessage() {
     </div>
   );
 }
+
+export default LoadingMessage
