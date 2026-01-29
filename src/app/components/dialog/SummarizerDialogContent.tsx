@@ -1,7 +1,7 @@
 import React, { useEffect } from "react"
 import { useState } from "react"
 import { Language } from "../../../types/types"
-import { data } from "../../../data/mockData"
+import { mockData } from "../../../data/mockData"
 import QuickSummary from "./QuickSummary"
 import TermsExplanations from "./TermsExplanations"
 import Takeaway from "./Takeaway"
@@ -15,22 +15,30 @@ import LoadingSkeleton from "./LoadingSkeleton"
 import LoadingMessage from "./LoadingMessage"
 import LanguageSelector from "./LanguageSelector"
 
-
-const SummarizerDialogContent = () => {
+const useSummarizer = () => {
+  const [data, setData] = useState<{ summary: typeof mockData }>()
   const [isLoading, setIsLoading] = useState(true)
-  const [selectedLanguage, setSelectedLanguage] = useState<Language>(
-    Language.HU,
-  )
 
   useEffect(() => {
     setTimeout(() => {
       setIsLoading(false)
+      setData({ summary: mockData })
     }, 2000)
   }, [])
 
-  const currentContent = data.content_by_language[selectedLanguage]
+  return { data, isLoading }
+}
 
-  if (isLoading) {
+const SummarizerDialogContent = () => {
+  const { data, isLoading } = useSummarizer()
+  const [selectedLanguage, setSelectedLanguage] = useState<Language>(
+    Language.HU,
+  )
+  const { summary = null} = data || {}
+
+  const currentContent = summary?.content_by_language[selectedLanguage]
+
+  if (isLoading || !currentContent) {
     return (
       <div className="p-3 overflow-hidden mb-3">
         <div className="absolute inset-0 flex items-center justify-center z-20 pointer-events-none">
@@ -45,7 +53,7 @@ const SummarizerDialogContent = () => {
     <div className="overflow-y-auto mb-3">
       <div className="flex flex-col gap-5 p-3 border-b">
         <TimeAndRoi
-          timeAndRoi={data.metrics_and_evaluation["4_time_and_roi_metrics"]}
+          timeAndRoi={summary.metrics_and_evaluation["4_time_and_roi_metrics"]}
         />
         <LanguageSelector
           selectedLanguage={selectedLanguage}
@@ -69,25 +77,25 @@ const SummarizerDialogContent = () => {
         />
         <ContentValueDistribution
           contentValue={
-            data.metrics_and_evaluation["3_content_value_distribution_percent"]
+            summary.metrics_and_evaluation["3_content_value_distribution_percent"]
           }
         />
         <NoveltyAndCognitiveLoad
-          novelty={data.metrics_and_evaluation["5_novelty_and_redundancy"]}
-          cognitiveLoad={data.metrics_and_evaluation["8_cognitive_load"]}
+          novelty={summary.metrics_and_evaluation["5_novelty_and_redundancy"]}
+          cognitiveLoad={summary.metrics_and_evaluation["8_cognitive_load"]}
         />
-        <ActionCommitment 
+        <ActionCommitment
           actionCommitment={
-            data.metrics_and_evaluation["6_action_and_commitment"]
+            summary.metrics_and_evaluation["6_action_and_commitment"]
           }
         />
         <Assessment
-          assessment={data.metrics_and_evaluation["9_overall_assessment"]}
+          assessment={summary.metrics_and_evaluation["9_overall_assessment"]}
         />
         <MetaInfo
-          assistantName={data.meta.assistant_name}
-          inputLanguage={data.meta.input_language}
-          outputLanguages={data.meta.output_languages}
+          assistantName={summary.meta.assistant_name}
+          inputLanguage={summary.meta.input_language}
+          outputLanguages={summary.meta.output_languages}
         />
       </div>
     </div>
