@@ -202,6 +202,7 @@ export default function App() {
   const handleSummarize = () => {
     setIsOpen(true);
     setIsLoading(true);
+    console.log("bababoi")
     setSelectionButton({ show: false, x: 0, y: 0, text: "", isForward: true });
     // Clear the selection
     window.getSelection()?.removeAllRanges();
@@ -212,32 +213,15 @@ export default function App() {
     }, 10000);
   };
 
-  const handleOpenModal = () => {
-    setIsOpen(true);
-    setIsLoading(true);
-    
-    // Simulate loading for 10 seconds
-    setTimeout(() => {
-      setIsLoading(false);
-    }, 10000);
-  };
-
   return (
     <>
-      {/* Optional trigger button (mainly for the popup UI) */}
-      <div className="fixed bottom-8 left-1/2 -translate-x-1/2 pointer-events-none">
-        <button
-          onClick={handleOpenModal}
-          className="pointer-events-auto px-4 py-2 bg-foreground text-background rounded-lg shadow-lg hover:opacity-90 transition-opacity font-medium text-sm"
-        >
-          Open Text Analysis
-        </button>
-      </div>
-
       {/* Text Selection Summarize Button */}
       {selectionButton.show && (
         <button
           onClick={handleSummarize}
+          onMouseDown={e => {
+            e.stopPropagation();
+          }}
           className="fixed px-3 py-1.5 bg-foreground text-background rounded-md shadow-lg hover:opacity-90 transition-opacity font-medium text-xs z-50"
           style={{
             left: `${selectionButton.x}px`,
