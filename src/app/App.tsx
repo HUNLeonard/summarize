@@ -10,9 +10,11 @@ import { MetaInfo } from "./components/MetaInfo";
 import { TimeAndRoi } from "./components/TimeAndRoi";
 import { X } from "lucide-react";
 import { data } from "../data/mockData";
+import { Language } from "../types/types";
+import { cn } from "./components/ui/utils";
 
 export default function App() {
-  const [selectedLanguage, setSelectedLanguage] = useState<"en" | "hu">("hu");
+  const [selectedLanguage, setSelectedLanguage] = useState<Language>(Language.HU);
   const [isMetaInfoExpanded, setIsMetaInfoExpanded] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -27,25 +29,19 @@ export default function App() {
 
   const currentContent = data.content_by_language[selectedLanguage];
 
-  // Function to calculate button position from a range
   const calculateButtonPosition = (range: Range, isForward: boolean) => {
     let rect;
     if (isForward) {
-      // Forward selection: show at bottom-right of the selection
       const endRange = range.cloneRange();
-      endRange.collapse(false); // Collapse to end
+      endRange.collapse(false);
       rect = endRange.getBoundingClientRect();
     } else {
-      // Backward selection (default): show above the first character
       const startRange = range.cloneRange();
-      startRange.collapse(true); // Collapse to start
+      startRange.collapse(true);
       rect = startRange.getBoundingClientRect();
     }
 
     if (rect) {
-      // Use viewport coordinates directly (for fixed positioning)
-      // Position at bottom-right corner of the selection
-      // For forward selection: align button's right edge with selection's right edge
       const x = isForward ? rect.right : rect.left;
       const y = isForward ? rect.bottom + 5 : rect.top - 35;
       return { x, y };
@@ -53,10 +49,8 @@ export default function App() {
     return null;
   };
 
-  // Handle text selection
   useEffect(() => {
     const handleMouseUp = () => {
-      // Small delay to ensure selection is complete
       setTimeout(() => {
         const selection = window.getSelection();
         const text = selection?.toString().trim();
@@ -64,7 +58,6 @@ export default function App() {
         if (text && text.length > 0 && selection && selection.rangeCount > 0) {
           const range = selection.getRangeAt(0);
           
-          // Detect if selection is forward (left-to-right, top-to-bottom)
           const isForward = 
             selection.anchorNode && 
             selection.focusNode &&
@@ -75,7 +68,6 @@ export default function App() {
           const position = calculateButtonPosition(range, !!isForward);
           
           if (position) {
-            // Store the range so we can recalculate position on scroll
             setStoredRange(range.cloneRange());
             setSelectionButton({
               show: true,
@@ -93,12 +85,11 @@ export default function App() {
     };
 
     const handleMouseDown = (e: MouseEvent) => {
-      // Don't hide button if clicking on the button itself
       const target = e.target as HTMLElement;
       if (target.closest('[data-summarize-button]')) {
         return;
       }
-      // Hide button when user starts a new selection
+
       setSelectionButton({ show: false, x: 0, y: 0, text: "", isForward: true });
       setStoredRange(null);
     };
@@ -112,7 +103,7 @@ export default function App() {
     };
   }, []);
 
-  // Update button position on scroll/resize
+
   useEffect(() => {
     if (!selectionButton.show || !storedRange) return;
 
@@ -127,24 +118,16 @@ export default function App() {
           }));
         }
       } catch (e) {
-        // Range might be invalid (e.g., DOM changed), hide button
         setSelectionButton({ show: false, x: 0, y: 0, text: "", isForward: true });
         setStoredRange(null);
       }
     };
 
-    // Listen to scroll on window, document, and body to catch all scroll events
-    window.addEventListener("scroll", updatePosition, true); // Use capture phase to catch all scrolls
-    document.addEventListener("scroll", updatePosition, true);
-    document.documentElement.addEventListener("scroll", updatePosition, true);
-    document.body.addEventListener("scroll", updatePosition, true);
+    window.addEventListener("scroll", updatePosition, true);
     window.addEventListener("resize", updatePosition);
 
     return () => {
       window.removeEventListener("scroll", updatePosition, true);
-      document.removeEventListener("scroll", updatePosition, true);
-      document.documentElement.removeEventListener("scroll", updatePosition, true);
-      document.body.removeEventListener("scroll", updatePosition, true);
       window.removeEventListener("resize", updatePosition);
     };
   }, [selectionButton.show, storedRange, selectionButton.isForward]);
@@ -166,7 +149,6 @@ export default function App() {
 
   return (
     <>
-      {/* Text Selection Summarize Button */}
       {selectionButton.show && (
         <button
           onClick={handleSummarize}
@@ -192,19 +174,15 @@ export default function App() {
           onClick={() => setIsOpen(false)}
         >
           <div 
-            className={`w-full max-w-2xl h-[90vh] bg-background rounded-lg shadow-xl border relative ${
-              isLoading ? 'overflow-hidden' : 'overflow-y-auto'
-            }`}
+            className={cn('w-full max-w-2xl h-[90dvh] bg-background rounded-lg shadow-xl border relative overflow-y-auto',
+              isLoading && 'overflow-hidden')}
             onClick={(e) => e.stopPropagation()}
           >
-            {/* Loading Message - Centered over entire modal */}
             {isLoading && (
               <div className="absolute inset-0 flex items-center justify-center z-20 pointer-events-none">
                 <LoadingMessage />
               </div>
             )}
-
-            {/* Header */}
             <div className="px-3 py-2 border-b bg-card sticky top-0 z-10 flex items-center justify-between">
               <div>
                 <h1 className="font-semibold text-sm">Text Analysis</h1>
@@ -218,66 +196,47 @@ export default function App() {
                 <X className="size-4" />
               </button>
             </div>
-
-            {/* Time & ROI - at the very top, above tabs */}
             {!isLoading && (
               <div className="px-3 pt-3 pb-2">
                 <TimeAndRoi timeAndRoi={data.metrics_and_evaluation["4_time_and_roi_metrics"]} />
               </div>
             )}
 
-            {/* Language Tabs */}
             {!isLoading && (
               <div className="px-3 py-3 border-b">
                 <div className="flex gap-1 bg-muted p-1 rounded-lg">
                   <button
-                    onClick={() => setSelectedLanguage("en")}
-                    className={`flex-1 px-3 py-1.5 text-xs font-medium rounded-md transition-colors ${
-                      selectedLanguage === "en"
-                        ? "bg-background text-foreground shadow-sm"
-                        : "text-muted-foreground hover:text-foreground"
-                    }`}
-                  >
+                    onClick={() => setSelectedLanguage(Language.EN)}
+                    className={cn('flex-1 px-3 py-1.5 text-xs font-medium rounded-md transition-colors',
+                      selectedLanguage === Language.EN ? 'bg-background text-foreground shadow-sm' : 'text-muted-foreground hover:text-foreground')}>
                     English
                   </button>
                   <button
-                    onClick={() => setSelectedLanguage("hu")}
-                    className={`flex-1 px-3 py-1.5 text-xs font-medium rounded-md transition-colors ${
-                      selectedLanguage === "hu"
-                        ? "bg-background text-foreground shadow-sm"
-                        : "text-muted-foreground hover:text-foreground"
-                    }`}
-                  >
+                    onClick={() => setSelectedLanguage(Language.HU)}
+                    className={cn('flex-1 px-3 py-1.5 text-xs font-medium rounded-md transition-colors',
+                      selectedLanguage === Language.HU ? 'bg-background text-foreground shadow-sm' : 'text-muted-foreground hover:text-foreground')}>
                     Hungarian
                   </button>
                 </div>
               </div>
             )}
 
-            {/* Scrollable Content */}
-            <div className="p-3 space-y-2 relative min-h-[500px]">
+            <div className="relative p-3 flex flex-col gap-2 min-h-125">
               {isLoading ? (
                 <LoadingSkeleton />
               ) : (
                 <>
-                  {/* Quick Summary */}
                   <QuickSummary
                     oneSentence={currentContent["1_quick_summary"].one_sentence}
                     threeSentences={currentContent["1_quick_summary"].three_sentences}
                     fiveSentences={currentContent["1_quick_summary"].five_sentences}
                   />
-
-                  {/* Terms & Explanations */}
                   <TermsExplanations
                     status={currentContent["2_terms_and_explanations"].status}
                     items={currentContent["2_terms_and_explanations"].items}
                     ifNone={currentContent["2_terms_and_explanations"].if_none}
                   />
-
-                  {/* Takeaway */}
                   <Takeaway takeaway={currentContent["10_main_takeaway_message"].takeaway} />
-
-                  {/* Metrics - shown once, not language-dependent */}
                   <MetricsSection
                     contentValue={data.metrics_and_evaluation["3_content_value_distribution_percent"]}
                     timeAndRoi={data.metrics_and_evaluation["4_time_and_roi_metrics"]}
@@ -287,8 +246,6 @@ export default function App() {
                     cognitiveLoad={data.metrics_and_evaluation["8_cognitive_load"]}
                     assessment={data.metrics_and_evaluation["9_overall_assessment"]}
                   />
-
-                  {/* Meta Info - moved to bottom and collapsible */}
                   <MetaInfo
                     assistantName={data.meta.assistant_name}
                     inputLanguage={data.meta.input_language}

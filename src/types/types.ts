@@ -4,3 +4,8 @@ export type Term = {
   explanation: string;
   example: string;
 }
+
+export enum Language {
+  EN = "en",
+  HU = "hu",
+}
