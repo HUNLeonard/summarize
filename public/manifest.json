@@ -1,0 +1,10 @@
+{
+  "manifest_version": 3,
+  "name": "Summarizer",
+  "version": "1.0.0",
+  "description": "Summarize text and get insights. This extension uses the Summarizer API to generate insights and a quick summary of the text. It also allows you to save your insights and summaries for later reference.",
+  "permissions": ["activeTab", "scripting", "storage"],
+  "action": {
+    "default_popup": "index.html"
+  }
+}
