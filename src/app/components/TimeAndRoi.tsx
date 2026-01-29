@@ -1,4 +1,5 @@
-import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
+import React from 'react'
+import { Card } from "./ui/card";
 import { Badge } from "./ui/badge";
 import { Clock } from "lucide-react";
 

@@ -1,3 +1,4 @@
+import React from "react";
 import { useState, useEffect } from "react";
 import { LoadingSkeleton } from "./components/LoadingSkeleton";
 import { LoadingMessage } from "./components/LoadingMessage";
@@ -9,7 +10,7 @@ import { MetaInfo } from "./components/MetaInfo";
 import { TimeAndRoi } from "./components/TimeAndRoi";
 import { X, ChevronUp } from "lucide-react";
 
-// Sample data from the user
+// Sample mock data for the modal UI
 const data = {
   "meta": {
     "assistant_name": "Text Master",
@@ -223,44 +224,14 @@ export default function App() {
 
   return (
     <>
-      {/* Page Content */}
-      <div className="min-h-screen bg-background p-8 max-w-4xl mx-auto">
-        <article className="prose prose-gray max-w-none">
-          <h1 className="text-3xl font-bold mb-4">Why Humans Should Hibernate a Bit in Winter</h1>
-          <p className="text-muted-foreground mb-6">
-            An exploration of seasonal rhythms and the benefits of slowing down
-          </p>
-          
-          <p className="mb-4">
-            Winter causes biological changes in humans that encourage rest and inward focus, similar to how some animals survive cold seasons by slowing down. The shortened days and colder temperatures trigger hormonal shifts that make us naturally want to conserve energy and turn inward.
-          </p>
-          
-          <p className="mb-4">
-            Consider the hummingbird, one of nature's most fascinating examples of energy management. These tiny birds enter a state called torpor at night to conserve energy, lowering their body temperature and metabolism to survive cold periods. They appear almost lifeless, using minimal energy until morning arrives.
-          </p>
-          
-          <p className="mb-4">
-            Drawing on neuroscience, research shows that humans experience similar hormonal shifts in winter that make us sleepier and more inward-focused. Modern work culture often ignores these natural rhythms, expecting the same productivity year-round. However, slowing down in winter supports brain functions related to memory and emotion, preparing us for the renewal of spring.
-          </p>
-          
-          <p className="mb-4">
-            Cultural traditions have long recognized the value of winter slowness. Winter reading, gathering by the fire, and traditional food preparation serve as rituals that honor the season's pace. Yeonjoo Jung, for example, makes yuza danji each winter—a traditional Korean dessert that takes several weeks to prepare—as a way to embrace the season's slower rhythm.
-          </p>
-          
-          <p className="mb-4">
-            Perhaps it's time we learn from both nature and tradition, allowing ourselves to hibernate just a bit during winter months. The benefits for mental and emotional health could be profound.
-          </p>
-        </article>
-        
-        {/* Open Modal Button */}
-        <div className="fixed bottom-8 left-1/2 -translate-x-1/2">
-          <button
-            onClick={handleOpenModal}
-            className="px-4 py-2 bg-foreground text-background rounded-lg shadow-lg hover:opacity-90 transition-opacity font-medium text-sm"
-          >
-            Open Text Analysis
-          </button>
-        </div>
+      {/* Optional trigger button (mainly for the popup UI) */}
+      <div className="fixed bottom-8 left-1/2 -translate-x-1/2 pointer-events-none">
+        <button
+          onClick={handleOpenModal}
+          className="pointer-events-auto px-4 py-2 bg-foreground text-background rounded-lg shadow-lg hover:opacity-90 transition-opacity font-medium text-sm"
+        >
+          Open Text Analysis
+        </button>
       </div>
 
       {/* Text Selection Summarize Button */}

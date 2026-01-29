@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from "react";
+import React from "react";
 
 const loadingMessages = [
   "Learning to read",
