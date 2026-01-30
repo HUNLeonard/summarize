@@ -63,41 +63,81 @@ export const mockData = {
     }
   },
   "metrics_and_evaluation": {
-    "3_content_value_distribution_percent": {
-      "informational": 50,
-      "educational": 30,
-      "action_oriented": 10,
-      "strategic": 5,
-      "social_relational": 5,
-      "entertaining": 0,
-      "noise_empty": 0
+    "en": {
+      "3_content_value_distribution_percent": {
+        "informational": 50,
+        "educational": 30,
+        "action_oriented": 10,
+        "strategic": 5,
+        "social_relational": 5,
+        "entertaining": 0,
+        "noise_empty": 0
+      },
+      "4_time_and_roi_metrics": {
+        "estimated_reading_time_minutes": 3,
+        "content_density": "medium",
+        "expected_usefulness": "medium"
+      },
+      "5_novelty_and_redundancy": {
+        "novelty_level": "medium",
+        "redundancy_level": "low"
+      },
+      "6_action_and_commitment": {
+        "contains_specific_todo": "no",
+        "contains_question_to_recipient": "no",
+        "contains_deadline_or_urgency": "no"
+      },
+      "7_relevance_and_goal_fit": {
+        "directly_addressed_to_recipient": "no",
+        "assumed_relevance": "medium"
+      },
+      "8_cognitive_load": {
+        "text_complexity": "medium",
+        "mental_load": "low"
+      },
+      "9_overall_assessment": {
+        "reading_priority": "medium",
+        "skippability_estimate_percent": 40,
+        "one_sentence_recommendation": "This text is a moderately useful and informative read about the benefits of slowing down in winter."
+      }
     },
-    "4_time_and_roi_metrics": {
-      "estimated_reading_time_minutes": 3,
-      "content_density": "medium",
-      "expected_usefulness": "medium"
-    },
-    "5_novelty_and_redundancy": {
-      "novelty_level": "medium",
-      "redundancy_level": "low"
-    },
-    "6_action_and_commitment": {
-      "contains_specific_todo": "no",
-      "contains_question_to_recipient": "no",
-      "contains_deadline_or_urgency": "no"
-    },
-    "7_relevance_and_goal_fit": {
-      "directly_addressed_to_recipient": "no",
-      "assumed_relevance": "medium"
-    },
-    "8_cognitive_load": {
-      "text_complexity": "medium",
-      "mental_load": "low"
-    },
-    "9_overall_assessment": {
-      "reading_priority": "medium",
-      "skippability_estimate_percent": 40,
-      "one_sentence_recommendation": "This text is a moderately useful and informative read about the benefits of slowing down in winter."
+    "hu": {
+      "3_content_value_distribution_percent": {
+        "informational": 50,
+        "educational": 30,
+        "action_oriented": 10,
+        "strategic": 5,
+        "social_relational": 5,
+        "entertaining": 0,
+        "noise_empty": 0
+      },
+      "4_time_and_roi_metrics": {
+        "estimated_reading_time_minutes": 3,
+        "content_density": "közepes",
+        "expected_usefulness": "közepes"
+      },
+      "5_novelty_and_redundancy": {
+        "novelty_level": "közepes",
+        "redundancy_level": "alacsony"
+      },
+      "6_action_and_commitment": {
+        "contains_specific_todo": "nem",
+        "contains_question_to_recipient": "nem",
+        "contains_deadline_or_urgency": "nem"
+      },
+      "7_relevance_and_goal_fit": {
+        "directly_addressed_to_recipient": "nem",
+        "assumed_relevance": "közepes"
+      },
+      "8_cognitive_load": {
+        "text_complexity": "közepes",
+        "mental_load": "alacsony"
+      },
+      "9_overall_assessment": {
+        "reading_priority": "közepes",
+        "skippability_estimate_percent": 40,
+        "one_sentence_recommendation": "Ez a szöveg informatív és hasznos olvasás a tél lassulásának előnyeiről."
+      }
     }
   }
 };

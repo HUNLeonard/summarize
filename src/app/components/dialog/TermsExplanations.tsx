@@ -1,16 +1,14 @@
 import React from "react";
 import { Badge } from "../ui/badge";
 import { Lightbulb } from "lucide-react";
-import { Term } from "../../../types/types";
+import { Language, Summary } from "../../../types/types";
 import SectionCard from "./SectionCard"
 
 type Props = {
-  status: string;
-  items: Term[];
-  ifNone: string;
+  termsAndExplanations: Summary["content_by_language"][Language]["2_terms_and_explanations"]
 }
 
-const TermsExplanations = ({ status, items, ifNone }: Props) => {
+const TermsExplanations = ({ termsAndExplanations: { status, items, if_none } }: Props) => {
   return (
     <SectionCard title="Terms & Explanations" icon="BookOpen">
       {status === "present" && items.length > 0 ? (
@@ -32,7 +30,7 @@ const TermsExplanations = ({ status, items, ifNone }: Props) => {
             ))}
           </div>
         ) : (
-          <p className="text-xs text-muted-foreground italic">{ifNone}</p>
+          <p className="text-xs text-muted-foreground italic">{if_none}</p>
         )}
     </SectionCard>
   );

@@ -1,9 +1,6 @@
 @import 'tailwindcss' source(none);
 @source '../**/*.{js,ts,jsx,tsx}';
 
-@import 'tw-animate-css';
-
-
 @custom-variant dark (&:is(.summarizer *));
 
 .summarizer {
@@ -178,5 +175,12 @@
     font-size: var(--text-base);
     font-weight: var(--font-weight-normal);
     line-height: 1.5;
+  }
+
+  button,
+  [type="button"],
+  [role="button"],
+  a {
+    cursor: pointer;
   }
 }

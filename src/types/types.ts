@@ -1,4 +1,5 @@
 import { icons } from "lucide-react";
+import { mockData } from "../data/mockData";
 
 export type Term = {
   term: string;
@@ -13,3 +14,5 @@ export enum Language {
 }
 
 export type IconName = keyof typeof icons;
+
+export type Summary = typeof mockData

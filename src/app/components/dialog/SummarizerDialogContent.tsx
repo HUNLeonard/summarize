@@ -1,6 +1,6 @@
 import React, { useEffect } from "react"
 import { useState } from "react"
-import { Language } from "../../../types/types"
+import { Language, Summary } from "../../../types/types"
 import { mockData } from "../../../data/mockData"
 import QuickSummary from "./QuickSummary"
 import TermsExplanations from "./TermsExplanations"
@@ -16,7 +16,7 @@ import LoadingMessage from "./LoadingMessage"
 import LanguageSelector from "./LanguageSelector"
 
 const useSummarizer = () => {
-  const [data, setData] = useState<{ summary: typeof mockData }>()
+  const [data, setData] = useState<{ summary: Summary }>()
   const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
@@ -34,14 +34,12 @@ const SummarizerDialogContent = () => {
   const [selectedLanguage, setSelectedLanguage] = useState<Language>(
     Language.HU,
   )
-  const { summary = null} = data || {}
+  const { summary = null } = data || {}
 
-  const currentContent = summary?.content_by_language[selectedLanguage]
-
-  if (isLoading || !currentContent) {
+  if (isLoading || !summary) {
     return (
       <div className="p-3 overflow-hidden mb-3">
-        <div className="absolute inset-0 flex items-center justify-center z-20 pointer-events-none">
+        <div className="absolute inset-0 flex items-center justify-center z-20">
           <LoadingMessage />
         </div>
         <LoadingSkeleton />
@@ -49,54 +47,44 @@ const SummarizerDialogContent = () => {
     )
   }
 
+  const { meta } = summary
+  const {
+    "1_quick_summary": quickSummary,
+    "2_terms_and_explanations": termsAndExplanations,
+    "10_main_takeaway_message": takeaway,
+  } = summary.content_by_language[selectedLanguage]
+  const {
+    "3_content_value_distribution_percent": contentValue,
+    "4_time_and_roi_metrics": timeAndRoi,
+    "5_novelty_and_redundancy": novelty,
+    "6_action_and_commitment": actionCommitment,
+    "7_relevance_and_goal_fit": relevance,
+    "8_cognitive_load": cognitiveLoad,
+    "9_overall_assessment": assessment,
+  } = summary.metrics_and_evaluation[selectedLanguage]
+
   return (
     <div className="overflow-y-auto mb-3">
       <div className="flex flex-col gap-5 p-3 border-b">
-        <TimeAndRoi
-          timeAndRoi={summary.metrics_and_evaluation["4_time_and_roi_metrics"]}
-        />
+        <TimeAndRoi timeAndRoi={timeAndRoi} />
         <LanguageSelector
           selectedLanguage={selectedLanguage}
           onLanguageChange={setSelectedLanguage}
         />
       </div>
 
-      <div className="relative p-3 flex flex-col gap-2 min-h-125">
-        <QuickSummary
-          oneSentence={currentContent["1_quick_summary"].one_sentence}
-          threeSentences={currentContent["1_quick_summary"].three_sentences}
-          fiveSentences={currentContent["1_quick_summary"].five_sentences}
-        />
-        <TermsExplanations
-          status={currentContent["2_terms_and_explanations"].status}
-          items={currentContent["2_terms_and_explanations"].items}
-          ifNone={currentContent["2_terms_and_explanations"].if_none}
-        />
-        <Takeaway
-          takeaway={currentContent["10_main_takeaway_message"].takeaway}
-        />
-        <ContentValueDistribution
-          contentValue={
-            summary.metrics_and_evaluation["3_content_value_distribution_percent"]
-          }
-        />
+      <div className="p-3 flex flex-col gap-2">
+        <QuickSummary quickSummary={quickSummary} />
+        <TermsExplanations termsAndExplanations={termsAndExplanations} />
+        <Takeaway takeaway={takeaway} />
+        <ContentValueDistribution contentValue={contentValue} />
         <NoveltyAndCognitiveLoad
-          novelty={summary.metrics_and_evaluation["5_novelty_and_redundancy"]}
-          cognitiveLoad={summary.metrics_and_evaluation["8_cognitive_load"]}
+          novelty={novelty}
+          cognitiveLoad={cognitiveLoad}
         />
-        <ActionCommitment
-          actionCommitment={
-            summary.metrics_and_evaluation["6_action_and_commitment"]
-          }
-        />
-        <Assessment
-          assessment={summary.metrics_and_evaluation["9_overall_assessment"]}
-        />
-        <MetaInfo
-          assistantName={summary.meta.assistant_name}
-          inputLanguage={summary.meta.input_language}
-          outputLanguages={summary.meta.output_languages}
-        />
+        <ActionCommitment actionCommitment={actionCommitment} />
+        <Assessment assessment={assessment} />
+        <MetaInfo metaInfo={meta} />
       </div>
     </div>
   )

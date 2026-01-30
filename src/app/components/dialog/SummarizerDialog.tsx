@@ -26,7 +26,7 @@ const SummarizerDialog = ({ isOpen, onOpenChange }: Props) => {
           </p>
           <button
             onClick={() => onOpenChange(false)}
-            className="text-muted-foreground text-sm flex-1 p-2 bg-transparent hover:bg-muted/40 rounded-md absolute top-4 right-4 cursor-pointer"
+            className="text-muted-foreground text-sm flex-1 p-2 bg-transparent hover:bg-muted/40 rounded-md absolute top-4 right-4"
           >
             <X className="size-3" />
           </button>

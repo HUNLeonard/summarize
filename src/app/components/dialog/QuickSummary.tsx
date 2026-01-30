@@ -1,27 +1,26 @@
 import React, { useState } from "react";
 import SectionCard from "./SectionCard";
+import { Language, Summary } from "../../../types/types";
 
 type Props = {
-  oneSentence: string[];
-  threeSentences: string[];
-  fiveSentences: string[];
+  quickSummary: Summary["content_by_language"][Language]["1_quick_summary"]
 }
 
-const QuickSummary = ({ oneSentence, threeSentences, fiveSentences }: Props) => {
+const QuickSummary = ({ quickSummary: { one_sentence, three_sentences, five_sentences } }: Props) => {
   const [selectedView, setSelectedView] = useState<number>(1);
 
   const renderContent = () => {
     switch (selectedView) {
       case 1:
-        return oneSentence.map((sentence, idx) => (
+        return one_sentence.map((sentence, idx) => (
           <p key={idx} className="text-xs leading-relaxed">{sentence}</p>
         ));
       case 3:
-        return threeSentences.map((sentence, idx) => (
+        return three_sentences.map((sentence, idx) => (
           <p key={idx} className="text-xs leading-relaxed">{sentence}</p>
         ));
       case 5:
-        return fiveSentences.map((sentence, idx) => (
+        return five_sentences.map((sentence, idx) => (
           <p key={idx} className="text-xs leading-relaxed">{sentence}</p>
         ));
     }
