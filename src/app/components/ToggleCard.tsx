@@ -7,7 +7,7 @@ type Props = {
 }
 
 const ToggleSwitch = ({ enabled, onChange }: Props) => (
-  <div className="flex items-center justify-between p-3 rounded-lg bg-secondary/30 border border-border transition-all hover:bg-secondary/50">
+  <div className="flex items-center justify-between p-3 rounded-lg bg-secondary/30 border border-border">
     <div className="flex flex-col gap-1 flex-1 pr-3">
       <h3 className="text-sm font-semibold text-foreground">
         Extension Status
