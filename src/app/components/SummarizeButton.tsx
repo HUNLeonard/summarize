@@ -147,7 +147,7 @@ const SummarizeButton = ({ onSummarize }: Props) => {
         e.stopPropagation()
       }}
       className={cn(
-        "fixed px-3 py-1.5 bg-foreground text-background rounded-md shadow-lg hover:opacity-90 transition-opacity font-medium text-xs z-50",
+        "summarize fixed px-3 py-1.5 bg-foreground text-background rounded-md shadow-lg hover:opacity-90 transition-opacity font-medium text-xs z-50",
         selectionButton.isForward && "-translate-x-full",
       )}
       style={{

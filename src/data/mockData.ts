@@ -113,12 +113,12 @@ export const mockData = {
       },
       "4_time_and_roi_metrics": {
         "estimated_reading_time_minutes": 3,
-        "content_density": "közepes",
-        "expected_usefulness": "közepes"
+        "content_density": "medium",
+        "expected_usefulness": "medium"
       },
       "5_novelty_and_redundancy": {
-        "novelty_level": "közepes",
-        "redundancy_level": "alacsony"
+        "novelty_level": "medium",
+        "redundancy_level": "low"
       },
       "6_action_and_commitment": {
         "contains_specific_todo": "nem",
@@ -127,14 +127,14 @@ export const mockData = {
       },
       "7_relevance_and_goal_fit": {
         "directly_addressed_to_recipient": "nem",
-        "assumed_relevance": "közepes"
+        "assumed_relevance": "medium"
       },
       "8_cognitive_load": {
-        "text_complexity": "közepes",
-        "mental_load": "alacsony"
+        "text_complexity": "medium",
+        "mental_load": "low"
       },
       "9_overall_assessment": {
-        "reading_priority": "közepes",
+        "reading_priority": "medium",
         "skippability_estimate_percent": 40,
         "one_sentence_recommendation": "Ez a szöveg informatív és hasznos olvasás a tél lassulásának előnyeiről."
       }

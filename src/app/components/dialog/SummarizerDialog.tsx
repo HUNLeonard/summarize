@@ -20,7 +20,7 @@ const SummarizerDialog = ({ isOpen, onOpenChange }: Props) => {
         onClick={(e) => e.stopPropagation()}
       >
         <header className="bg-background p-3 border-b">
-          <h4 className="font-semibold text-sm">Text Analysis</h4>
+          <h4 className="font-semibold text-sm text-card-foreground">Text Analysis</h4>
           <p className="text-xs text-muted-foreground">
             Detailed content breakdown
           </p>

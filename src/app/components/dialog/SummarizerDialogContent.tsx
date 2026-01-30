@@ -1,7 +1,6 @@
-import React, { useEffect } from "react"
-import { useState } from "react"
-import { Language, Summary } from "../../../types/types"
-import { mockData } from "../../../data/mockData"
+import React, { useState } from "react"
+import { Language } from "../../../types/types"
+import useSummarizer from "../../../queries/useSummarizer"
 import QuickSummary from "./QuickSummary"
 import TermsExplanations from "./TermsExplanations"
 import Takeaway from "./Takeaway"
@@ -14,20 +13,6 @@ import Assessment from "./Assessment"
 import LoadingSkeleton from "./LoadingSkeleton"
 import LoadingMessage from "./LoadingMessage"
 import LanguageSelector from "./LanguageSelector"
-
-const useSummarizer = () => {
-  const [data, setData] = useState<{ summary: Summary }>()
-  const [isLoading, setIsLoading] = useState(true)
-
-  useEffect(() => {
-    setTimeout(() => {
-      setIsLoading(false)
-      setData({ summary: mockData })
-    }, 2000)
-  }, [])
-
-  return { data, isLoading }
-}
 
 const SummarizerDialogContent = () => {
   const { data, isLoading } = useSummarizer()
